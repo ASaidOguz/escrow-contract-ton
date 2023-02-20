@@ -14,18 +14,7 @@ global slice beneficiary;
 () authorize (sender) inline {
   throw_unless(187, equal_slice_bits(sender, arbiter));
 }
-() create_message(slice beneficiary){
-       var message = begin_cell()
-        .store_uint(0x10, 6)
-        .store_slice(beneficiary)
-        .store_coins(0)
-        .store_uint(0, 1 + 4 + 4 + 64 + 32 + 1 + 1)
-        .store_uint(0, 32)
-        .store_slice("Hello, world!")
-        .end_cell();
 
-    send_raw_message(message, 64);
-}
 () recv_internal (in_msg_full, in_msg_body) {
     if (in_msg_body.slice_empty?()) { ;; ignore empty messages
         return ();
@@ -40,8 +29,17 @@ global slice beneficiary;
 
     load_data();
     authorize(sender_address);
-    create_message(beneficiary);
     
+    var message = begin_cell()
+        .store_uint(0x10, 6)
+        .store_slice(beneficiary)
+        .store_coins(0)
+        .store_uint(0, 1 + 4 + 4 + 64 + 32 + 1 + 1)
+        .store_uint(0, 32)
+        .store_slice("Hello, beneficiary!")
+        .end_cell();
+
+    send_raw_message(message, 64);
     
 }
 

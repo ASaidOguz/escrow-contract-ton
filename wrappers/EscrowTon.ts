@@ -7,7 +7,10 @@ export type EscrowTonConfig = {
                               };
 
 export function escrowTonConfigToCell(config: EscrowTonConfig): Cell {
-    return beginCell().endCell();
+    return beginCell()
+    .storeAddress(config.arbiter)
+    .storeAddress(config.beneficiary)
+    .endCell();
 }
 
 export class EscrowTon implements Contract {
@@ -33,6 +36,11 @@ export class EscrowTon implements Contract {
 
     async getBeneficiary(provider: ContractProvider) {
         const result = await provider.get('get_beneficiary', []);
+        return result.stack.readAddress();
+    }
+
+    async getArbiter(provider: ContractProvider) {
+        const result = await provider.get('get_arbiter', []);
         return result.stack.readAddress();
     }
 }

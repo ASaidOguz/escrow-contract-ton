@@ -6,12 +6,21 @@ export async function run(provider: NetworkProvider) {
     const DEPLOYER_ADDRESS=Address.parse("EQDjUc7m2zSZ_oWh4wvmLf5a3UqOUfSzvBODeY5RXy9EWy7p")
     const ARBITER_ADDRESS=Address.parse("EQDjUc7m2zSZ_oWh4wvmLf5a3UqOUfSzvBODeY5RXy9EWy7p")
     const BENEFICIARY_ADDRESS=Address.parse("EQDjUc7m2zSZ_oWh4wvmLf5a3UqOUfSzvBODeY5RXy9EWy7p")
-    const Contract_address=Address.parse("EQBkfhVwJCAVuXq_ktyYyLoElobxMfHvapN1xqbDXgalvUcc")
+    const Contract_address=Address.parse("EQClqsTmsHjRvRRd97lFWlBkycTE0fuQRV18F2UY9FDYAlTW")
     const escrowTon = EscrowTon.createFromAddress(Contract_address);
 
     const openedContract =  provider.open(escrowTon);
-    const beneficiary=await openedContract.getBeneficiary()
 
-    console.log("Beneficiary:",beneficiary)
-    // run methods on `openedContract`
+    const beneficiary=await openedContract.getBeneficiary();
+    await sleep(1000);
+    const arbiter=await openedContract.getArbiter();
+    
+    //arbiter and beneficiary addreses;
+    console.log("Arbiter:",arbiter);
+    console.log("Beneficiary:",beneficiary);
+    
 }
+
+function sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
