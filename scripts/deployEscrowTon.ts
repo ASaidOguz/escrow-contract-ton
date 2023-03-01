@@ -10,9 +10,10 @@ export async function run(provider: NetworkProvider) {
     
 
     const escrowTon = EscrowTon.createFromConfig({
+      query_id:Math.floor(Math.random() * 10000),
       arbiter:ARBITER_ADDRESS,
       beneficiary:BENEFICIARY_ADDRESS,
-     
+      owner:DEPLOYER_ADDRESS
     }, await compile('EscrowTon'));
 
     await provider.deploy(escrowTon, toNano('0.05'));
